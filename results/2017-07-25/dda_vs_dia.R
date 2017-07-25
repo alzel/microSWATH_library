@@ -2,8 +2,8 @@ library(tidyverse)
 library(stringr)
 rm(list = ls())
 
-output_dir = "./results/2017-07-25/"
-figures_dir = "./figures"
+output_dir = "./results/2017-07-25"
+figures_dir = paste(output_dir, "figures",sep = "/")
 fun_name = "dda_vs_dia"
 dir.create(output_dir)
 dir.create(figures_dir)
@@ -173,6 +173,10 @@ p_fraction <- ggplot(data=dataset_combined, aes(x = n_norm, y = fraction)) +
   ylab("Fraction of proteins with at least 1 peptide with < FDR 0.01 ") +
   theme(aspect.ratio = 5/8)
 
+file_name = paste("p_fraction",fun_name, "png", sep=".")
+file_path = paste(figures_dir, file_name, sep="/")
+ggsave(plot = p_fraction, filename=file_path, width = 11.69, height = 8.27, dpi = 150)
+
 
 
 p_300 <- ggplot(data=dataset_combined %>% filter(id < 330), aes(x = id, y = fraction)) + 
@@ -180,7 +184,15 @@ p_300 <- ggplot(data=dataset_combined %>% filter(id < 330), aes(x = id, y = frac
   geom_point(data = dataset_combined %>% filter(id %in% c(1, 10, 20, 50, 100, 200, 300)), aes(x = id, colour = type, y=fraction)) +
   ggrepel::geom_text_repel(data = dataset_combined %>% filter(id %in% c(1, 10, 20, 50, 100, 200, 300)), aes(x = id, y=fraction, colour = type, label = n_present)) +
   xlab("Present in n samples") + 
+  ggtitle(paste("DIA is subset of DDA in", round(length(intersect(dataset_dda$protein_id, dataset_dia$protein_id))/length(unique(dataset_dia$protein_id)),2))) +
   ylab("Fraction of proteins with at least 1 peptide with < FDR 0.01 ") +
   theme(aspect.ratio = 5/8)
 
-length(intersect(dataset_dda$protein_id, dataset_dia$protein_id))/length(unique(dataset_dia$protein_id))
+file_name = paste("p_300",fun_name, "png", sep=".")
+file_path = paste(figures_dir, file_name, sep="/")
+ggsave(plot = p_300, filename=file_path, width = 11.69, height = 8.27, dpi = 150)
+
+
+
+
+
