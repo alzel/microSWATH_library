@@ -1,0 +1,2 @@
+cd ../..
+R CMD BATCH ./results/2017-05-25/dda_vs_dia.R ./results/2017-05-25/dda_vs_dia.Rout
