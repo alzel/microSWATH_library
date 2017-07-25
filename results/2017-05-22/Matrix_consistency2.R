@@ -71,12 +71,19 @@ getSliced <- function(data.f, n) {
 
 dataset.sliced <- getSliced(data.f = dataset, n = 1000)
 
+output_dir = "./results/2017-05-22"
+file_name = paste("dataset.sliced", fun_name, "RData", sep=".")
+file_path = paste(output_dir, file_name, sep="/")
+save(dataset.sliced,file=file_path)
+
 
 p <- ggplot(data=dataset.sliced, aes(x = as.numeric(id), y = n_present/max(n_present))) + 
   geom_line() + 
   xlab("sample") + 
   ylab("Nr of proteins with at least 1 peptide with < FDR 0.01 ") +
   theme(aspect.ratio = 5/8)
+
+
 
 file_name = paste(fun_name, "png", sep=".")
 file_path = paste(figures_dir, file_name, sep="/")
